@@ -1,0 +1,9 @@
+
+
+# Only the workspace definition allowed in here (no dependencies etc)
+
+[workspace]
+members=[
+    "main-unix",
+    "filetree",
+]
