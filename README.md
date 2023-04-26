@@ -45,8 +45,12 @@ rs_file_tree
 ```
 ![Demo gif](./demo_file_tree.gif)
 
-# Notes for my future self
+## Building it yourself:
+- with rust and cargo installed run: `cargo build --release --package main-unix`
+- afterwards one can copy the binary from: `target/release/main-unix`
 
+
+# Notes for my future self
 ## Configuring multi-workspace structure with cargo Rust
 ### creating the project structure
 ```
