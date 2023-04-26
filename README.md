@@ -1,12 +1,12 @@
 # File Tree parser
-Quick way to parse file tree of projects for Documentation. (good default settings for Rust Projects like ignor /target and ignore '.git')
+Quick way to parse file tree of projects for Documentation. (good default settings for Rust Projects like to ignore '/target' and to ignore '.git' ...)
 
 ## Usage
 - will run on current path as failback (if no path is provied via argument)
 - runs with `--ignore target` as default to ignore the Rust default folder for bulding.
 - for more optional flags see below:
 ```
-Usage: linux64 [OPTIONS] [PATH]
+Usage: rs_file_tree [OPTIONS] [PATH]
 
 Arguments:
   [PATH]  Folder to dive into. Workdir is assumed if omitted
@@ -24,7 +24,7 @@ Options:
 ## Output:
 Functionality to produce formated tree of a path:
 ```
-vincepr@linux:~/projects/rs_file_tree$ ./bin/linux64
+vincepr@linux:~/rust/rs_file_tree$ ./bin/rs_file_tree
 rs_file_tree
 ├──main-unix
 │  ├──src
