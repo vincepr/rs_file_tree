@@ -38,7 +38,8 @@ rs_file_tree
 │  │  └──lib.rs
 │  └──Cargo.toml
 ├──bin
-│  └──linux64
+│  └──main-unix
+├──demo_file_tree.gif
 ├──Cargo.toml
 ├──Cargo.lock
 └──README.md
