@@ -78,3 +78,19 @@ In our main crates we import our library:
 [dependencies]
 filetree = { path = "../filetree" }
 ```
+
+
+```
+
+ ├──depth1
+│  ├──emptyfolder
+│  ├──somefolder
+│  │  ├──depth2.txt
+│  ├──otherfolder
+│  │  ├──stacked_folder
+│  │   │  ├──deepest_file.txt
+│  │  ├──otherdepth2
+│  ├──depth1.txt
+ ├──settings.txt
+ ├──rootfile.txt
+```
