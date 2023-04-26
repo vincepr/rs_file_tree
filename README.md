@@ -12,38 +12,34 @@
 Functionality to produce formated tree of a path:
 ```
 rs_file_tree
-├── Cargo.lock
-├── Cargo.toml
-├── README.md
-├── config
-│   ├── default.json
-│   ├── production.json
-│   └── test.json
-├── rustfmt.toml
-├── src
-│   ├── database.rs
-│   ├── errors.rs
-│   ├── lib
-│   │   ├── authenticate_request.rs
-│   │   ├── date.rs
-│   │   ├── mod.rs
-│   │   ├── models.rs
-│   │   ├── to_object_id.rs
-│   │   └── token.rs
-│   ├── logger.rs
-│   ├── main.rs
-│   ├── models
-│   │   ├── cat.rs
-│   │   ├── mod.rs
-│   │   └── user.rs
-│   ├── routes
-│   │   ├── cat.rs
-│   │   ├── mod.rs
-│   │   ├── status.rs
-│   │   └── user.rs
-│   ├── settings.rs
-│   └── tests
-└── test.sh
+├──main-unix
+│  ├──src
+│  │  └──main.rs
+│  └──Cargo.toml
+├──filetree
+│  ├──src
+│  │  ├──node
+│  │  │  ├──print.rs
+│  │  │  └──mod.rs
+│  │  └──lib.rs
+│  └──Cargo.toml
+├──test
+│  ├──depth1
+│  │  ├──emptyfolder
+│  │  ├──somefolder
+│  │  │  └──depth2.txt
+│  │  ├──otherfolder
+│  │  │  ├──stacked_folder
+│  │  │  │  └──deepest_file.txt
+│  │  │  └──otherdepth2
+│  │  └──depth1.txt
+│  ├──.ignoreThis
+│  ├──settings.txt
+│  └──rootfile.txt
+├──Cargo.toml
+├──.gitignore
+├──Cargo.lock
+└──README.md
 ```
 
 - split into 2 workspaces 

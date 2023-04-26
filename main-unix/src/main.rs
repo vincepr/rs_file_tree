@@ -1,17 +1,22 @@
 use std::{path::PathBuf, process};
 
-use clap::Parser;
+use clap::{Parser, ArgAction};
 use filetree::Config;
 
 // // Define available flags:
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
+#[command(
+    version, about="like 'tree': quickly get a file-tree representation for documentations")]
 struct Args {
     /// Folder to dive into. Workdir is assumed if omitted.
-    path: PathBuf,
+    path: Option<PathBuf>,
 
-    /// Ignore files/folders beginning with a '.' Like '.gitignore'
-    #[arg(long, short, action)]
+    /// ignore an exact foldername/filename.
+    #[arg(long, short, default_value="target", value_name = "FOLDER")]
+    ignore: Option<String>,
+
+    /// Include files/folders beginning with a '.' Like '.gitignore'
+    #[arg(long, short, action=ArgAction::SetFalse)]
     dotignore: bool,
 
     /// Only display folders. Does not display any files
@@ -19,7 +24,7 @@ struct Args {
     folders: bool,
 
     /// How many layers deep to dive into folder structure
-    #[arg(long, short)]
+    #[arg(long, short, value_name = "uint32")]
     maxdepth: Option<usize>,
 
     /// Display size in B, KB, MB, GB for folders and files (commulative)
@@ -30,15 +35,18 @@ struct Args {
 fn main() {
     // parse cli-Arguments with clap:
     let args = Args::parse();
-    println!("{args:?}");
     let cfg = Config {
+        ignore: args.ignore,
         ignore_dot: args.dotignore,
         ignore_files: args.folders,
         with_max_depth: args.maxdepth,
         show_filesize: args.size,
     };
 
-    run(cfg, &args.path);
+    // if no path is set we assume the current working directory
+    let path = args.path.unwrap_or(get_current_working_dir().unwrap());
+
+    run(cfg, &path);
 }
 
 // running the filetree crate
@@ -53,4 +61,8 @@ fn run(cfg: Config, path: &PathBuf) {
     let tree = tree.unwrap();
     tree.print(cfg);
     process::exit(0);
+}
+
+fn get_current_working_dir() -> std::io::Result<PathBuf> {
+    std::env::current_dir()
 }

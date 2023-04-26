@@ -4,19 +4,24 @@ use super::Node;
 pub struct Config {
     /// ignore files/folders beginning with a '.' like '.gitignore'
     pub ignore_dot: bool,
+
     /// ignore all files (only folders)
     pub ignore_files: bool,
-    /// ignore empty folders
-    // pub ignore_empty_folders: bool, //TODO: implement this maybe filter before printing?
+
     /// only print till to the depth of n-folders. 0 -> root only, 1 -> open 1 folder deepr ...
     pub with_max_depth: Option<usize>,
+
     /// include (comulated) filesize
     pub show_filesize: bool,
+
+    /// optional: ignore a whole filename/foldername (example '--ignore target' for rust)
+    pub ignore: Option<String>,
 }
 
 impl Node {
     /// custom printing of the node-format to the console
     pub fn print(&self, cfg: Config) {
+        println!("{}", self.name);
         // print everything if no explicit max depth is set:
         let max_depth = match cfg.with_max_depth {
             None => usize::MAX,
@@ -38,6 +43,11 @@ impl Node {
             if cfg.ignore_files && !child.is_dir {
                 continue;
             }
+            if let Some(ignore) = &cfg.ignore {
+                if *ignore == child.name{
+                    continue;
+                }
+            }
 
             // 'whitespaces and |'formating before the node
             for _i in 0..depth {
@@ -53,7 +63,7 @@ impl Node {
         }
     }
 
-    // "├── testfolder   524 MB "
+    // print name formated like: "├── testfolder   524 MB "
     fn print_node_name(&self, is_lastchild: bool, cfg: &Config) {
         let filesize = match cfg.show_filesize {
             true => format!("   {}", format_size(self.size)),
@@ -66,7 +76,7 @@ impl Node {
     }
 }
 
-// from bytes to 'xx KB', 'xx MB', 'xx GB'...
+// convert from bytes to 'xx KB', 'xx MB', 'xx GB'...
 fn format_size(bytes: u64) -> String {
     const KB: u64 = 1024; // const (KB,MB) = (1,2) not viable in Rust?
     const MB: u64 = 1024 * KB;
