@@ -79,18 +79,6 @@ In our main crates we import our library:
 filetree = { path = "../filetree" }
 ```
 
-
-```
-
- ├──depth1
-│  ├──emptyfolder
-│  ├──somefolder
-│  │  ├──depth2.txt
-│  ├──otherfolder
-│  │  ├──stacked_folder
-│  │   │  ├──deepest_file.txt
-│  │  ├──otherdepth2
-│  ├──depth1.txt
- ├──settings.txt
- ├──rootfile.txt
-```
+# Adding Clap crate to parse Args
+Clap is a command line arg-parser.
+- `cargo add clap --features derive`

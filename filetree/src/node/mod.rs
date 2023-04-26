@@ -1,7 +1,6 @@
-use std::{path::PathBuf, os::unix::prelude::MetadataExt, ffi::OsStr};
+use std::{ffi::OsStr, os::unix::prelude::MetadataExt, path::PathBuf};
 
-pub(crate) mod print;
-
+pub mod print;
 
 #[derive(Debug, Ord, PartialOrd, PartialEq, Eq)]
 /// struct to hold files/folders in a tree like datastructure

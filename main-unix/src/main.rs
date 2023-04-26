@@ -1,47 +1,56 @@
-use std::{path::PathBuf, env, process};
+use std::{path::PathBuf, process};
 
+use clap::Parser;
 use filetree::Config;
 
+// // Define available flags:
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Folder to dive into. Workdir is assumed if omitted.
+    path: PathBuf,
 
+    /// Ignore files/folders beginning with a '.' Like '.gitignore'
+    #[arg(long, short, action)]
+    dotignore: bool,
 
+    /// Only display folders. Does not display any files
+    #[arg(long, short, action)]
+    folders: bool,
 
-fn main() {
-    // reading in args:
-    let path = parse_args().unwrap_or_else(|err|{
-        eprintln!("input-Error: {err}");
-        process::exit(1);
-    });
+    /// How many layers deep to dive into folder structure
+    #[arg(long, short)]
+    maxdepth: Option<usize>,
 
-    let cfg = Config{
-        ignore_dot: todo!(),
-        ignore_files: todo!(),
-        ignore_empty_folders: todo!(),
-        with_max_depth: todo!(),
-        show_filesize: todo!(),
-    };
-
-    // creating the tree-structure of folders and files:
-    let path = PathBuf::from(path);
-    let tree = filetree::new(&path);
-    if let Err(err) = tree{
-        eprintln!("walking-folder-Error: {err}");
-        process::exit(1);
-    } else{
-        //running successfuly:
-        let tree = tree.unwrap();
-        tree.print_all();
-        //println!("{:?}",tree);
-    }
+    /// Display size in B, KB, MB, GB for folders and files (commulative)
+    #[arg(long, short, action)]
+    size: bool,
 }
 
+fn main() {
+    // parse cli-Arguments with clap:
+    let args = Args::parse();
+    println!("{args:?}");
+    let cfg = Config {
+        ignore_dot: args.dotignore,
+        ignore_files: args.folders,
+        with_max_depth: args.maxdepth,
+        show_filesize: args.size,
+    };
 
-// comand line parsing:
-fn parse_args() -> Result<String, &'static str> {
-    let mut args = env::args();
-    if args.len() != 2 {
-        return Err("need exactly one Argument that points to the folder to search");
+    run(cfg, &args.path);
+}
+
+// running the filetree crate
+fn run(cfg: Config, path: &PathBuf) {
+    // creating the tree-structure of folders and files:
+    let tree = filetree::new(path);
+    if let Err(err) = tree {
+        eprintln!("walking-folder-Error: {err}");
+        process::exit(1);
     }
-    args.next();
-    let path = args.next().unwrap();
-    Ok(path)
+    // print out the created structure to the terminal:
+    let tree = tree.unwrap();
+    tree.print(cfg);
+    process::exit(0);
 }
