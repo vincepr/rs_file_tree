@@ -1,5 +1,7 @@
 use std::{path::PathBuf, env, process};
 
+use filetree::Config;
+
 
 
 
@@ -10,16 +12,25 @@ fn main() {
         process::exit(1);
     });
 
+    let cfg = Config{
+        ignore_dot: todo!(),
+        ignore_files: todo!(),
+        ignore_empty_folders: todo!(),
+        with_max_depth: todo!(),
+        show_filesize: todo!(),
+    };
+
     // creating the tree-structure of folders and files:
     let path = PathBuf::from(path);
-    let nodes = filetree::walk(&path);
-    if let Err(err) = nodes{
+    let tree = filetree::new(&path);
+    if let Err(err) = tree{
         eprintln!("walking-folder-Error: {err}");
         process::exit(1);
     } else{
         //running successfuly:
-
-        println!("{:?}",nodes);
+        let tree = tree.unwrap();
+        tree.print_all();
+        //println!("{:?}",tree);
     }
 }
 
