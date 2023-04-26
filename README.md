@@ -1,16 +1,30 @@
-# File Tree output as string, std-out etc
+# File Tree parser
+Quick way to parse file tree of projects for Documentation. (good default settings for Rust Projects like ignor /target and ignore '.git')
 
-## possible flags to implement
-- ignore `.files and .folders`
-- ignore files
-- only till depth `--depth 3`
-- colorize folders in terminal
-- exclude empty folders
-- `out ./filepath` write it to file instead of console
+## Usage
+- will run on current path as failback (if no path is provied via argument)
+- runs with `--ignore target` as default to ignore the Rust default folder for bulding.
+- for more optional flags see below:
+```
+Usage: linux64 [OPTIONS] [PATH]
 
-## Goals
+Arguments:
+  [PATH]  Folder to dive into. Workdir is assumed if omitted
+
+Options:
+  -i, --ignore <FOLDER>    ignore an exact foldername/filename [default: target]
+  -d, --dotignore          Include files/folders beginning with a '.' Like '.gitignore'
+  -f, --folders            Only display folders. Does not display any files
+  -m, --maxdepth <uint32>  How many layers deep to dive into folder structure
+  -s, --size               Display size in B, KB, MB, GB for folders and files (commulative)
+  -h, --help               Print help
+  -V, --version            Print version
+```
+
+## Output:
 Functionality to produce formated tree of a path:
 ```
+vincepr@linux:~/projects/rs_file_tree$ ./bin/linux64
 rs_file_tree
 ├──main-unix
 │  ├──src
@@ -23,35 +37,18 @@ rs_file_tree
 │  │  │  └──mod.rs
 │  │  └──lib.rs
 │  └──Cargo.toml
-├──test
-│  ├──depth1
-│  │  ├──emptyfolder
-│  │  ├──somefolder
-│  │  │  └──depth2.txt
-│  │  ├──otherfolder
-│  │  │  ├──stacked_folder
-│  │  │  │  └──deepest_file.txt
-│  │  │  └──otherdepth2
-│  │  └──depth1.txt
-│  ├──.ignoreThis
-│  ├──settings.txt
-│  └──rootfile.txt
+├──bin
+│  └──linux64
 ├──Cargo.toml
-├──.gitignore
 ├──Cargo.lock
 └──README.md
 ```
+![Demo gif](./demo_file_tree.gif)
 
-- split into 2 workspaces 
-    - 1 binary to create the binary for linux- (and possible win-) terminal
-    - 1 library that will output a formated string.
-- optional feature flags:
-    - `-- folders`folders only
-    - `--depth 2` limit depth
+# Notes for my future self
 
-
-# Configuring multi-workspace structure with cargo Rust
-## creating the project structure
+## Configuring multi-workspace structure with cargo Rust
+### creating the project structure
 ```
 cargo new rs_file_tree --lib
 cd rs_file_tree
@@ -75,6 +72,6 @@ In our main crates we import our library:
 filetree = { path = "../filetree" }
 ```
 
-# Adding Clap crate to parse Args
-Clap is a command line arg-parser.
+## Adding Clap crate to parse Args
+activate derive-mode-macros with the feature flag:
 - `cargo add clap --features derive`
